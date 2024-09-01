@@ -13,24 +13,6 @@ FF_SIZES = [1, 2, 4, 8, 16, ]
 
 SIZE_TO_TYPE = dict(zip(FF_SIZES, FF_TYPES))
 
-STRUCT_ERROR_MAP = {
-    idc.STRUC_ERROR_MEMBER_NAME:
-        (exceptions.SarkErrorStructMemberName, "already has member with this name (bad name)"),
-    idc.STRUC_ERROR_MEMBER_OFFSET:
-        (exceptions.SarkErrorStructMemberOffset, "already has member at this offset"),
-    idc.STRUC_ERROR_MEMBER_SIZE:
-        (exceptions.SarkErrorStructMemberSize, "bad number of bytes or bad sizeof(type)"),
-    idc.STRUC_ERROR_MEMBER_TINFO:
-        (exceptions.SarkErrorStructMemberTinfo, "bad typeid parameter"),
-    idc.STRUC_ERROR_MEMBER_STRUCT:
-        (exceptions.SarkErrorStructMemberStruct, "bad struct id (the 1st argument)"),
-    idc.STRUC_ERROR_MEMBER_UNIVAR:
-        (exceptions.SarkErrorStructMemberUnivar, "unions can't have variable sized members"),
-    idc.STRUC_ERROR_MEMBER_VARLAST:
-        (exceptions.SarkErrorStructMemberVarlast, "variable sized member should be the last member in the structure"),
-}
-
-
 def struct_member_error(err, sid, name, offset, size):
     """Create and format a struct member exception.
 
@@ -42,10 +24,9 @@ def struct_member_error(err, sid, name, offset, size):
         size: Member size
 
     Returns:
-        A ``SarkErrorAddStructMemeberFailed`` derivative exception, with an
-        informative message.
+        A ``SarkTerror`` derivative exception, with an informative message.
     """
-    exception, msg = STRUCT_ERROR_MAP[err]
+    exception = exceptions.SarkTerr.get_terr_class(err)
     struct_name = idaapi.get_struc_name(sid)
     return exception(('AddStructMember(struct="{}", member="{}", offset={}, size={}) '
                       'failed: {}').format(
@@ -53,7 +34,7 @@ def struct_member_error(err, sid, name, offset, size):
         name,
         offset,
         size,
-        msg
+        exception.msg
     ))
 
 

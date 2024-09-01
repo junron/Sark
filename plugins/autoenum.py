@@ -10,11 +10,11 @@ def apply_enum_by_name(enum, member_name):
         for operand in line.insn.operands:
             if operand.type.is_imm:
                 if operand.imm == member_value:
-                    idaapi.op_enum(line.ea, operand.n, enum.eid, enum.members[member_name].serial)
+                    idaapi.op_enum(line.ea, operand.n, enum.eid)
 
             elif operand.type.is_displ or operand.type.is_phrase:
                 if operand.addr == member_value:
-                    idaapi.op_enum(line.ea, operand.n, enum.eid, enum.members[member_name].serial)
+                    idaapi.op_enum(line.ea, operand.n, enum.eid)
 
 
 def get_common_value(desired=None):

@@ -93,10 +93,10 @@ def fix_addresses(start=None, end=None):
         (start, end)
     """
     if start in (None, idaapi.BADADDR):
-        start = idaapi.cvar.inf.min_ea
+        start = idaapi.inf_get_min_ea()
 
     if end in (None, idaapi.BADADDR):
-        end = idaapi.cvar.inf.max_ea
+        end = idaapi.inf_get_max_ea()
 
     return start, end
 
@@ -155,10 +155,9 @@ def get_name_or_address(ea):
 
 def get_native_size():
     """Get the native word size in normal 8-bit bytes."""
-    info = idaapi.get_inf_structure()
-    if info.is_64bit():
+    if idaapi.inf_is_64bit():
         return 8
-    elif info.is_32bit():
+    elif idaapi.inf_is_32bit_exactly():
         return 4
     else:
         return 2
