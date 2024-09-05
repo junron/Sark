@@ -27,7 +27,7 @@ def struct_member_error(err, sid, name, offset, size):
         A ``SarkTerror`` derivative exception, with an informative message.
     """
     exception = exceptions.SarkTerr.get_terr_class(err)
-    struct_name = idaapi.get_struc_name(sid)
+    struct_name = idc.get_struc_name(sid)
     return exception(('AddStructMember(struct="{}", member="{}", offset={}, size={}) '
                       'failed: {}').format(
         struct_name,
@@ -51,12 +51,12 @@ def create_struct(name):
         exceptions.SarkStructAlreadyExists: A struct with the same name already exists
         exceptions.SarkCreationFailed:  Struct creation failed
     """
-    sid = idaapi.get_struc_id(name)
+    sid = idc.get_struc_id(name)
     if sid != idaapi.BADADDR:
         # The struct already exists.
         raise exceptions.SarkStructAlreadyExists("A struct names {!r} already exists.".format(name))
 
-    sid = idaapi.add_struc(idaapi.BADADDR, name, 0)
+    sid = idc.add_struc(idaapi.BADADDR, name, 0)
     if sid == idaapi.BADADDR:
         raise exceptions.SarkStructCreationFailed("Struct creation failed.")
 
@@ -75,7 +75,7 @@ def get_struct(name):
     Raises:
         exceptions.SarkStructNotFound: is the struct does not exist.
     """
-    sid = idaapi.get_struc_id(name)
+    sid = idc.get_struc_id(name)
     if sid == idaapi.BADADDR:
         raise exceptions.SarkStructNotFound()
 

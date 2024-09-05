@@ -63,7 +63,7 @@ def remove_enum(name):
 
 def _add_enum_member(enum, name, value, bitmask=DEFMASK):
     """Add an enum member."""
-    error = idaapi.add_enum_member(enum, name, value, bitmask)
+    error = idc.add_enum_member(enum, name, value, bitmask)
 
     if error:
         raise _enum_member_error(error, enum, name, value, bitmask)
