@@ -1,6 +1,5 @@
 import ida_ua
 import idaapi
-import ida_ida
 import idautils
 import idc
 
@@ -29,7 +28,7 @@ OPND_READ_FLAGS = {
 
 
 def _is_intel()->bool:
-    proc_name = ida_ida.inf_get_procname()
+    proc_name = idaapi.inf_get_procname()
     return proc_name == 'metapc'
 
 
@@ -44,7 +43,7 @@ class Phrase(object):
         if self.op_t.type not in (idaapi.o_displ, idaapi.o_phrase):
             raise exceptions.OperandNotPhrase(f'Operand is not of type o_phrase or o_displ: {self.op_t.type}')
 
-        proc_name = ida_ida.inf_get_procname()
+        proc_name = idaapi.inf_get_procname()
         if proc_name != 'metapc':
             raise exceptions.PhraseProcessorNotSupported(
                 'Phrase analysis not supported for processor {}'.format(proc_name))
@@ -416,7 +415,7 @@ class Instruction(object):
 
     @property
     def indexing_mode(self):
-        if ida_ida.inf_get_procname() != 'ARM':
+        if idaapi.inf_get_procname() != 'ARM':
             return IndexingMode()
 
         return IndexingMode(pre=bool(self.insn_t.auxpref & 0x20),

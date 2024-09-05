@@ -78,24 +78,34 @@ class EnumComments(object):
         self._eid = eid
 
     @property
-    def value(self):
+    def regular(self):
         return idc.get_enum_cmt(self._eid)
 
-    @value.setter
-    def value(self, comment):
-        success = idc.set_enum_cmt(self._eid, comment)
+    @regular.setter
+    def regular(self, comment):
+        success = idc.set_enum_cmt(self._eid, comment, False)
+        if not success:
+            raise exceptions.CantSetEnumComment("Cant set enum comment.")
+
+
+    @property
+    def repeat(self):
+        return idc.get_enum_cmt(self._eid)
+
+    @repeat.setter
+    def repeat(self, comment):
+        success = idc.set_enum_cmt(self._eid, comment, True)
         if not success:
             raise exceptions.CantSetEnumComment("Cant set enum comment.")
 
     def __repr__(self):
-        return (
-            "EnumComments("
-            "name={name!r},"
-            " value={value!r})"
-        ).format(
+        return ("EnumComments("
+                "name={name!r},"
+                " reqular={regular!r},"
+                " repeat={repeat!r})").format(
             name=Enum(eid=self._eid).name,
-            value=self.value,
-        )
+            regular=self.regular,
+            repeat=self.repeat, )
 
 
 class EnumMembers(object):

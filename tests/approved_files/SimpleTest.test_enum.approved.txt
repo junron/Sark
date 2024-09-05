@@ -1,6 +1,6 @@
 <Enum(name='FunLittleEnum')>
     bitfield = False
-    comments = EnumComments(name='FunLittleEnum', value=None)
+    comments = EnumComments(name='FunLittleEnum', reqular=None, repeat=None)
     eid = 18374686479671623820
     flag = 1179648
     name = FunLittleEnum
